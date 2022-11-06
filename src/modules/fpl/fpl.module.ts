@@ -9,7 +9,7 @@ import { FplService } from './fpl.service';
 @Module({
   imports: [
     HttpModule.register({
-      timeout: 5000,
+      timeout: 15000,
       maxRedirects: 5,
       maxBodyLength: 10000000,
     }),

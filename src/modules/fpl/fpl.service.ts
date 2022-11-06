@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import mongoose from 'mongoose';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { BaseError } from 'src/errors/base-error';
 import { NetworkError } from 'src/errors/network-error';
 import { NotFoundError } from 'src/errors/not-found-error';
 import { PlayerService } from '../player/player.service';
@@ -44,6 +45,18 @@ export class FplService {
       .buildUpsertWeeks(weeks)
       .then(() => true)
       .catch(() => false);
+  }
+
+  @Cron(CronExpression.EVERY_5_MINUTES)
+  async updateFplCronJob() {
+    console.log('crone job started');
+    await this.updateFpl()
+      .then((res) => {
+        if (res instanceof BaseError)
+          console.log(res.errorType, ': ', res.message);
+        else console.log('crone job ended succesfully');
+      })
+      .catch(async (e) => console.log(e));
   }
 
   async updateFpl(): Promise<NetworkError | NotFoundError | OutFplUpdatedDto> {

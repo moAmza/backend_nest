@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BaseError, ErrorTypes } from './base-error';
 
 const errorType: ErrorTypes = 'NetworkError';
-const baseMessage = 'ارتباط شما با اینترنت ظعیف است';
+const baseMessage = 'ارتباط شما با اینترنت ضعیف است';
 export class NetworkError extends BaseError {
   TAG: 'NetworkError';
   @ApiProperty({ required: true, default: HttpStatus.GATEWAY_TIMEOUT })

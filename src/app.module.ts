@@ -10,11 +10,13 @@ import { UserModule } from './modules/user/user.module';
 import { WeekModule } from './modules/week/week.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({ rootPath: join(__dirname, 'public') }),
     MongooseModule.forRoot('mongodb://localhost/nest'),
+    ScheduleModule.forRoot(),
     PlayerModule,
     UserModule,
     AuthModule,
