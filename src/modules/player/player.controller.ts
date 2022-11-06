@@ -19,7 +19,7 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
   @Get('all')
   @ApiOperation({ summary: 'get all players' })
-  @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async getPaginatedUsers(
     @Query() input: InGetPaginatedPlayers,
   ): Promise<OutGetPaginatedPlayersDto> {

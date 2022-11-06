@@ -14,6 +14,7 @@ import { Role } from '../../decorators/roles.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
 import { NotFoundError } from 'src/errors/not-found-error';
@@ -32,6 +33,7 @@ export class SocialController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'follow user' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async followUser(
     @Param('followingId') followingId: string,
     @Req() { userId }: { userId: string },
@@ -49,6 +51,7 @@ export class SocialController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'unfollow user' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async unFollowUser(
     @Param('followingId') followingId: string,
     @Req() { userId }: { userId: string },
@@ -64,6 +67,7 @@ export class SocialController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get followers in paginated form' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async getPaginatedFollowers(
     @Req() { userId }: { userId: string },
     @Query() input: InGetPaginatedFollow,
@@ -79,6 +83,7 @@ export class SocialController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get followings in paginated form' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async getPaginatedFollowings(
     @Req() { userId }: { userId: string },
     @Query() input: InGetPaginatedFollow,

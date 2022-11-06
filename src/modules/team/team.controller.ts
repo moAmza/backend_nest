@@ -15,6 +15,7 @@ import { Role } from '../../decorators/roles.decorator';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
 import { BadRequestError } from 'src/errors/bad-request-error';
@@ -32,6 +33,7 @@ export class TeamController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get my team' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async getMyTeam(
     @Req() { userId }: { userId: string },
   ): Promise<OutGetTeamDto> {
@@ -46,6 +48,7 @@ export class TeamController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'add player to team' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async addPlayerToTeam(
     @Req() { userId }: { userId: string },
     @Body() body: InAddPlayer,
@@ -65,6 +68,7 @@ export class TeamController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'delete player from team' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async deletePlayerFromTeam(
     @Req() { userId }: { userId: string },
     @Query('position_num') position_num: number,
@@ -83,6 +87,7 @@ export class TeamController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'swap two players in team' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async swapPlayers(
     @Req() { userId }: { userId: string },
     @Query('position1') position1: number,

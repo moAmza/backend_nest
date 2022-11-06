@@ -36,7 +36,6 @@ export class UserController {
   @Role('USER')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'get all users' })
-  @ApiBadRequestResponse({ type: BadRequestError })
   async getPaginatedUsers(
     @Req() { userId }: { userId: string },
     @Query() input: InGetPaginatedUsers,
@@ -80,7 +79,6 @@ export class UserController {
     },
   })
   @ApiNotFoundResponse({ type: NotFoundError })
-  @ApiBadRequestResponse({ type: BadRequestError })
   async uploadProfileImage(
     @Req() { userId }: { userId: string },
     @UploadedFile() image: Express.Multer.File,

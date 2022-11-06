@@ -22,7 +22,7 @@ export class AuthController {
 
   @Post('signup')
   @ApiOperation({ summary: 'send verification code' })
-  @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiBadRequestResponse({ type: DuplicateError })
   async register(
     @Body() userInfo: InRegisterDto,
   ): Promise<OutShortVerifierDto> {
@@ -37,6 +37,7 @@ export class AuthController {
   @ApiOperation({ summary: 'login user' })
   @ApiNotFoundResponse({ type: NotFoundError })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async login(@Body() userInfo: InLoginDto): Promise<OutJwtTokenDto> {
     const data = await this.authService.login(userInfo);
     if (data instanceof BadRequestError) return data.throw();
@@ -47,6 +48,7 @@ export class AuthController {
   @Post('confirmation')
   @ApiOperation({ summary: 'verify code and create new user' })
   @ApiBadRequestResponse({ type: BadRequestError })
+  @ApiNotFoundResponse({ type: NotFoundError })
   async conformation(@Body() userInfo: InConfirmDto): Promise<OutJwtTokenDto> {
     const data = await this.authService.confirm(userInfo);
     if (data instanceof DuplicateError) return data.throw();
