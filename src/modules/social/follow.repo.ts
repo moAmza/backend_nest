@@ -50,6 +50,15 @@ export class FollowRepo {
     });
   }
 
+  async getAllFollowingIds(
+    followerId: string,
+  ): Promise<{ followingId: mongoose.Types.ObjectId }[]> {
+    return await this.model.find(
+      { followerId: new mongoose.Types.ObjectId(followerId) },
+      { followingId: 1, _id: 0 },
+    );
+  }
+
   async getPaginatedFollowers(
     userId: string,
     limit: number,

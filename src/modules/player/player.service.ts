@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { PlayerRepo } from './player.repo';
 import { PlayerDao } from './daos/player.dao';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { InGetPaginatedPlayers } from './dtos/in-get-paginated-players.dto';
 import { TypePlayerDto } from './dtos/type-player.dto';
 import { OutGetPaginatedPlayersDto } from './dtos/out-get-paginated-players.dto';
@@ -11,7 +11,7 @@ import { InBulkUpsertPlayerDto } from './dtos/in-bulk-upsert-player.dto';
 import { StatsDao } from './daos/stats.dao';
 import { WeekService } from '../week/week.service';
 import { StatsService } from './stats.service';
-import { BaseError } from 'src/errors/base-error';
+import { BaseError } from '../../errors/base-error';
 
 @Injectable()
 export class PlayerService {

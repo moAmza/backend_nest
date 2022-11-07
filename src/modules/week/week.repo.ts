@@ -17,4 +17,8 @@ export class WeekRepo {
   async getCurrentWeek(): Promise<MongoDoc<Week> | null> {
     return await this.model.findOne({ isCurrent: true });
   }
+
+  async getWeekById(id: string): Promise<MongoDoc<Week> | null> {
+    return await this.model.findById(id);
+  }
 }

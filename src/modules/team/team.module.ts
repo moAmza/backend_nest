@@ -9,6 +9,7 @@ import { TeamService } from './team.service';
 import { RecruitmentRepo } from './recruitment.repo';
 import { Recruitment, RecruitmentSchema } from './recruitment.schema';
 import { RecruitmentService } from './recruitment.service';
+import { EventModule } from '../event/event.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RecruitmentService } from './recruitment.service';
       { name: Recruitment.name, schema: RecruitmentSchema },
     ]),
     PlayerModule,
+    EventModule,
   ],
   controllers: [TeamController],
   providers: [RecruitmentService, RecruitmentRepo, TeamService, TeamRepo],

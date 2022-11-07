@@ -21,8 +21,8 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { OutGetUserDto } from './dtos/out-get-user.dto';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { InGetPaginatedUsers } from './dtos/in-get-paginated-users.dto';
 import { OutGetPaginatedUsersDto } from './dtos/out-get-paginated-users.dto';
 import { FileInterceptor } from '@nestjs/platform-express';

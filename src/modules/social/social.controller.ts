@@ -17,8 +17,8 @@ import {
   ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { OutStatusDto } from 'src/dtos/out-status.dto';
 import { InGetPaginatedFollow } from './dtos/in-get-paginated-follows.dto';
 import { OutGetPaginatedFollowsDto } from './dtos/out-get-paginated-follows.dto';

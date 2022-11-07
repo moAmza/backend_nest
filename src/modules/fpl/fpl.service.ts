@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { BaseError } from 'src/errors/base-error';
-import { NetworkError } from 'src/errors/network-error';
-import { NotFoundError } from 'src/errors/not-found-error';
+import { BaseError } from '../../errors/base-error';
+import { NetworkError } from '../../errors/network-error';
+import { NotFoundError } from '../../errors/not-found-error';
 import { PlayerService } from '../player/player.service';
 import { WeekService } from '../week/week.service';
 import { FplDao } from './daos/fpl.dao';

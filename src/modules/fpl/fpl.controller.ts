@@ -4,7 +4,7 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { Role } from '../../decorators/roles.decorator';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { OutFplUpdatedDto } from './dtos/out-fpl-updated.dto';
-import { BaseError } from 'src/errors/base-error';
+import { BaseError } from '../../errors/base-error';
 
 @UseGuards(RolesGuard)
 @Controller('fpl')

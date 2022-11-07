@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { FollowRepo } from './follow.repo';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { UserService } from '../user/user.service';
-import { BaseError } from 'src/errors/base-error';
+import { BaseError } from '../../errors/base-error';
 import { InGetPaginatedFollow } from './dtos/in-get-paginated-follows.dto';
 import { OutGetPaginatedFollowsDto } from './dtos/out-get-paginated-follows.dto';
 import { FollowDao } from './daos/follow.dao';
@@ -66,6 +66,12 @@ export class FollowService {
       createdAt: new Date(),
     });
     return true;
+  }
+
+  async getAllFollowingIds(userId: string): Promise<mongoose.Types.ObjectId[]> {
+    return (await this.followRepo.getAllFollowingIds(userId)).map(
+      (v) => v.followingId,
+    );
   }
 
   async getPaginatedFollowers(

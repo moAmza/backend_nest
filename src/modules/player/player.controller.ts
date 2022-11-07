@@ -9,8 +9,8 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { OutGetPlayerDto } from './dtos/out-get-player.dto';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { InGetPaginatedPlayers } from './dtos/in-get-paginated-players.dto';
 import { OutGetPaginatedPlayersDto } from './dtos/out-get-paginated-players.dto';
 

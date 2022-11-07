@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { catchError, lastValueFrom, map } from 'rxjs';
-import { NetworkError } from 'src/errors/network-error';
+import { NetworkError } from '../../errors/network-error';
 import { TypeFplBootstrapDto } from './dtos/type-fpl-bootstrap.dto';
 
 @Injectable()

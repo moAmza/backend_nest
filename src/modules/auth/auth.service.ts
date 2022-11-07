@@ -10,16 +10,18 @@ import { TypeJwtPayload } from './dtos/type-jwt-payload.dto';
 import { VerifierDao } from './daos/verifer.dao';
 import { TypeFullVerifier } from './dtos/type-full-verifier.dto';
 import { OutJwtTokenDto } from './dtos/out-jwt-token.dto';
-import { DuplicateError } from 'src/errors/duplicate-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
-import { NotFoundError } from 'src/errors/not-found-error';
+import { DuplicateError } from '../../errors/duplicate-error';
+import { BadRequestError } from '../../errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
 import { TeamService } from '../team/team.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly teamService: TeamService,
+    private readonly mailService: MailService,
     private readonly verifier: VerifierRepo,
   ) {}
 
@@ -45,9 +47,8 @@ export class AuthService {
   async register(
     userInfo: InRegisterDto,
   ): Promise<OutShortVerifierDto | DuplicateError> {
-    const code = 1000;
+    const code = 19283;
     const isInputValid = await this.userService.verifyRegisterInput(userInfo);
-    console.log(isInputValid);
 
     if (isInputValid !== true) return isInputValid;
     const verifierModel = await this.verifier.create({
@@ -58,8 +59,7 @@ export class AuthService {
       createdAt: new Date(),
     });
     const verifier = VerifierDao.convertOne(verifierModel);
-    console.log(verifier);
-
+    const mail = this.mailService.sendVerifierEmail(verifier);
     return {
       status: true,
       count: verifier.count,

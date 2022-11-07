@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # Madge graph
 graph.png
+
+# Env files
+.env

@@ -18,8 +18,8 @@ import {
   ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { BadRequestError } from 'src/errors/bad-request-error';
-import { NotFoundError } from 'src/errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
 import { OutGetTeamDto } from './dtos/out-get-team.dto';
 import { InAddPlayer } from './dtos/in-add-player.dto';
 

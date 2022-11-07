@@ -3,7 +3,7 @@ import { WeekService } from './week.service';
 import { ApiNotFoundResponse, ApiOperation } from '@nestjs/swagger';
 import { TypeWeekDto } from './dtos/type-week.dto';
 import { OutGetWeekDto } from './dtos/out-get-week.dto';
-import { NotFoundError } from 'src/errors/not-found-error';
+import { NotFoundError } from '../../errors/not-found-error';
 
 @Controller('week')
 export class WeekController {

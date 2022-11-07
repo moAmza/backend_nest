@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { TeamRepo } from './team.repo';
 import { TeamDao } from './daos/team.dao';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 import { TypeTeamDto } from './dtos/type-team.dto';
 import { RecruitmentDao } from './daos/recruitment.dao';
-import { BaseError } from 'src/errors/base-error';
+import { BaseError } from '../../errors/base-error';
 import { RecruitmentService } from './recruitment.service';
 import { PlayerService } from '../player/player.service';
+import { EventService } from '../event/event.service';
 
 @Injectable()
 export class TeamService {
@@ -16,6 +17,7 @@ export class TeamService {
     private readonly teamRepo: TeamRepo,
     private readonly playerService: PlayerService,
     private readonly recruitService: RecruitmentService,
+    private readonly eventService: EventService,
   ) {}
 
   async createTeam(
@@ -153,15 +155,34 @@ export class TeamService {
     if (player2 instanceof BaseError) return player2;
     if (player1.role !== player2.role)
       return new BadRequestError('DifferentRole');
-    if (player1.isPlaying !== player2.isPlaying) await this.createNewSwapLog();
     await this.recruitService.swapPlayerIds(
       team.id,
       positionNum1,
       positionNum2,
     );
-    if (player1.isPlaying !== player2.isPlaying) await this.createNewSwapLog();
+    await this.createNewSwapLog(
+      userId,
+      player1.id,
+      player2.id,
+      positionNum1,
+      positionNum2,
+    );
     return await this.getTeamByUserId(userId);
   }
 
-  async createNewSwapLog() {}
+  async createNewSwapLog(
+    userId: string,
+    pastPlayerId: string,
+    nextPlayerId: string,
+    positionNum1: number,
+    positionNum2: number,
+  ) {
+    this.eventService.createEventLog(
+      userId,
+      pastPlayerId,
+      nextPlayerId,
+      positionNum1,
+      positionNum2,
+    );
+  }
 }

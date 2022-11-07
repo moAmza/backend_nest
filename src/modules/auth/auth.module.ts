@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { TeamModule } from '../team/team.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TeamModule } from '../team/team.module';
     ]),
     UserModule,
     TeamModule,
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, VerifierRepo],

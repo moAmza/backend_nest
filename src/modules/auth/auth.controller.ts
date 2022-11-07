@@ -11,9 +11,9 @@ import {
   ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { DuplicateError } from 'src/errors/duplicate-error';
-import { NotFoundError } from 'src/errors/not-found-error';
-import { BadRequestError } from 'src/errors/bad-request-error';
+import { DuplicateError } from '../../errors/duplicate-error';
+import { NotFoundError } from '../../errors/not-found-error';
+import { BadRequestError } from '../../errors/bad-request-error';
 
 @UseGuards(RolesGuard)
 @Controller('auth')
@@ -27,8 +27,6 @@ export class AuthController {
     @Body() userInfo: InRegisterDto,
   ): Promise<OutShortVerifierDto> {
     const data = await this.authService.register(userInfo);
-    console.log(data);
-
     if (data instanceof DuplicateError) return data.throw();
     return data;
   }
