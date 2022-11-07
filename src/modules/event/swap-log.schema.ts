@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 @Schema()
-export class EventLog {
+export class SwapLog {
   @Prop({ required: true })
   weekId: mongoose.Types.ObjectId;
   @Prop({ required: true })
@@ -17,4 +17,4 @@ export class EventLog {
   positionNum2: number;
 }
 
-export const EventLogSchema = SchemaFactory.createForClass(EventLog);
+export const SwapLogSchema = SchemaFactory.createForClass(SwapLog);

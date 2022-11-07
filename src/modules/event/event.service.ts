@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { EventLogRepo } from './event-log.repo';
-import { WeekDao } from './daos/week.dao';
+import { Inject, Injectable } from '@nestjs/common';
+import { SwapLogRepo } from './swap-log.repo';
 import { NotFoundError } from '../../errors/not-found-error';
 import { TypeEventDto } from './dtos/type-event.dto';
 import { FollowService } from '../social/social.service';
@@ -13,18 +12,21 @@ import { UserService } from '../user/user.service';
 import { BaseError } from 'src/errors/base-error';
 import { PlayerService } from '../player/player.service';
 import { OutSwapLogDto } from './dtos/out-swap-log.dto';
+import { LikeEventRepo } from './like-event.repo';
+import { TypeSwapLogDto } from './dtos/type-swap-log.dto';
 
 @Injectable()
 export class EventService {
   constructor(
-    private readonly eventRepo: EventLogRepo,
+    private readonly swapLogRepo: SwapLogRepo,
+    private readonly likeEventRepo: LikeEventRepo,
     private readonly followService: FollowService,
     private readonly weekService: WeekService,
     private readonly userService: UserService,
-    private readonly playerService: PlayerService,
+    private readonly ps: PlayerService,
   ) {}
 
-  async createEventLog(
+  async createSwapLog(
     userId: string,
     pastPlayerId: string,
     nextPlayerId: string,
@@ -33,7 +35,7 @@ export class EventService {
   ): Promise<OutStatusDto | NotFoundError> {
     const week = await this.weekService.getCurrentWeek();
     if (week instanceof NotFoundError) return week;
-    await this.eventRepo.createEventLog(
+    await this.swapLogRepo.createSwapLog(
       userId,
       week.id,
       pastPlayerId,
@@ -44,13 +46,30 @@ export class EventService {
     return { status: true };
   }
 
+  private async getOutSwapLog(
+    swap: TypeSwapLogDto,
+  ): Promise<OutSwapLogDto | null> {
+    const player1 = await this.ps.getPlayerByid(swap.pastPlayerId.toString());
+    if (player1 instanceof BaseError) return null;
+    const player2 = await this.ps.getPlayerByid(swap.nextPlayerId.toString());
+    if (player2 instanceof BaseError) return null;
+    const outSwap: OutSwapLogDto = {
+      pastPlayer: player1,
+      nextPlayer: player2,
+      positionNum1: swap.positionNum1,
+      positionNum2: swap.positionNum2,
+    };
+
+    return outSwap;
+  }
+
   async getEvents(
     userId: string,
     page: number,
     num: number,
-  ): Promise<OutGetPaginatedEventsDto | NotFoundError> {
+  ): Promise<OutGetPaginatedEventsDto> {
     const followingIds = await this.followService.getAllFollowingIds(userId);
-    const paginatedEvents = await this.eventRepo.getEvents(
+    const paginatedEvents = await this.swapLogRepo.getEvents(
       [...followingIds, new mongoose.Types.ObjectId(userId)],
       (page - 1) * num,
       num,
@@ -71,26 +90,7 @@ export class EventService {
           if (week instanceof BaseError) return null;
 
           const outSwaps: OutSwapLogDto[] = (
-            await Promise.all(
-              event.swaps.map(async (swap) => {
-                const player1 = await this.playerService.getPlayerByid(
-                  swap.pastPlayerId.toString(),
-                );
-                if (player1 instanceof BaseError) return null;
-                const player2 = await this.playerService.getPlayerByid(
-                  swap.nextPlayerId.toString(),
-                );
-                if (player2 instanceof BaseError) return null;
-                const outSwap: OutSwapLogDto = {
-                  pastPlayer: player1,
-                  nextPlayer: player2,
-                  positionNum1: swap.positionNum1,
-                  positionNum2: swap.positionNum2,
-                };
-
-                return outSwap;
-              }),
-            )
+            await Promise.all(event.swaps.map((s) => this.getOutSwapLog(s)))
           ).reduce(
             (cur, val) => (val ? [...cur, val] : cur),
             [] as OutSwapLogDto[],
@@ -108,5 +108,27 @@ export class EventService {
     ).reduce((cur, val) => (val ? [...cur, val] : cur), [] as OutEventDto[]);
 
     return { count: paginatedEvents.count ?? 0, values: events };
+  }
+
+  async likeEvent(
+    userId: string,
+    weekId: string,
+    userEventId: string,
+  ): Promise<OutStatusDto> {
+    await this.likeEventRepo.createLikeEvent(userId, weekId, userEventId);
+    return { status: true };
+  }
+
+  async dislikeEvent(
+    userId: string,
+    weekId: string,
+    userEventId: string,
+  ): Promise<OutStatusDto> {
+    const like = await this.likeEventRepo.removeLikeEvent(
+      userId,
+      weekId,
+      userEventId,
+    );
+    return { status: like !== null };
   }
 }

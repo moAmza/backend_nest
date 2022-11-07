@@ -177,7 +177,7 @@ export class TeamService {
     positionNum1: number,
     positionNum2: number,
   ) {
-    this.eventService.createEventLog(
+    this.eventService.createSwapLog(
       userId,
       pastPlayerId,
       nextPlayerId,

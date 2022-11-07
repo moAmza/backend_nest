@@ -2,22 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { TypeEventDto } from './dtos/type-event.dto';
-import { EventLog } from './event-log.schema';
+import { SwapLog } from './swap-log.schema';
 
 @Injectable()
-export class EventLogRepo {
+export class SwapLogRepo {
   constructor(
-    @InjectModel(EventLog.name) private readonly model: Model<EventLog>,
+    @InjectModel(SwapLog.name) private readonly model: Model<SwapLog>,
   ) {}
 
-  async createEventLog(
+  async createSwapLog(
     userId: string,
     weekId: string,
     pastPlayerId: string,
     nextPlayerId: string,
     positionNum1: number,
     positionNum2: number,
-  ): Promise<MongoDoc<EventLog>> {
+  ): Promise<MongoDoc<SwapLog>> {
     return await this.model.create({
       userId: new mongoose.Types.ObjectId(userId),
       weekId: new mongoose.Types.ObjectId(weekId),
@@ -33,6 +33,8 @@ export class EventLogRepo {
     skip: number,
     limit: number,
   ): Promise<PaginatedType<TypeEventDto>> {
+    console.log(userIds);
+
     return (
       await this.model.aggregate([
         { $match: { userId: { $in: userIds } } },

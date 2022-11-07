@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -18,6 +19,8 @@ import { Role } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { OutGetPaginatedEventsDto } from './dtos/out-get-paginated-events.dto';
 import { InGetPaginatedEvents } from './dtos/in-get-paginated-events.dto';
+import { OutStatusDto } from 'src/dtos/out-status.dto';
+import { InLikeEventDto } from './dtos/in-like-event.dto';
 
 @UseGuards(RolesGuard)
 @Controller('event')
@@ -26,21 +29,17 @@ export class EventController {
   @Get()
   @Role('USER')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'get events' })
-  @ApiNotFoundResponse({ type: NotFoundError })
+  @ApiOperation({ summary: 'get events of (followers + user)' })
   async getEvents(
     @Req() { userId }: { userId: string },
     @Query() input: InGetPaginatedEvents,
   ): Promise<OutGetPaginatedEventsDto> {
-    console.log(userId);
-
-    const week = await this.eventService.getEvents(
+    const events = await this.eventService.getEvents(
       userId,
       input.page,
       input.num,
     );
-    if (week instanceof NotFoundError) return week.throw();
-    return week;
+    return events;
   }
 
   @Post('/like')
@@ -48,10 +47,16 @@ export class EventController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'like an event' })
   @ApiNotFoundResponse({ type: NotFoundError })
-  async likeEvent(@Req() { userId }: { userId: string }): Promise<{}> {
-    // const week = await this.eventService.getEvents(userId);
-    // if (week instanceof NotFoundError) return week.throw();
-    return {};
+  async likeEvent(
+    @Req() { userId }: { userId: string },
+    @Body() body: InLikeEventDto,
+  ): Promise<OutStatusDto> {
+    const like = await this.eventService.likeEvent(
+      userId,
+      body.weekId,
+      body.userId,
+    );
+    return like;
   }
 
   @Delete('/like')
@@ -59,9 +64,15 @@ export class EventController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'unlike an event' })
   @ApiNotFoundResponse({ type: NotFoundError })
-  async unlikeEvent(@Req() { userId }: { userId: string }): Promise<{}> {
-    // const week = await this.eventService.getEvents(userId);
-    // if (week instanceof NotFoundError) return week.throw();
-    return {};
+  async unlikeEvent(
+    @Req() { userId }: { userId: string },
+    @Body() body: InLikeEventDto,
+  ): Promise<OutStatusDto> {
+    const like = await this.eventService.dislikeEvent(
+      userId,
+      body.weekId,
+      body.userId,
+    );
+    return like;
   }
 }
