@@ -20,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot(),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, 'public') }),
-    MongooseModule.forRoot(process.env.MONGODB_CREDENTIALS ?? ''),
+    MongooseModule.forRoot(`mongodb://${process.env.MONGO_HOST}/nest`),
     ScheduleModule.forRoot(),
     MailerModule.forRoot({ transport: process.env.MAIL_SERVICE_CREDENTIALS }),
     PlayerModule,

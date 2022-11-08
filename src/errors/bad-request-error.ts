@@ -41,7 +41,7 @@ export class BadRequestError extends BaseError {
   statusCode: HttpStatus = HttpStatus.BAD_REQUEST;
   @ApiProperty({ required: true, default: 'SomeBadRequestErrorType' })
   errorType: ErrorTypes;
-  @ApiProperty({ required: true, default: 'پیام قابل نمایش' })
+  @ApiProperty({ required: true, default: '...' })
   message: string = 'دسترسی لازم برای این کار را ندارید';
   @ApiProperty({ required: true, default: undefined })
   errorData: any = undefined;

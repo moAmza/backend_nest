@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { InConfirmDto } from './dtos/in-confirm.dto';
 import { InLoginDto } from './dtos/in-login.dto';
 import { InRegisterDto } from './dtos/in-register.dto';
@@ -24,6 +24,17 @@ export class AuthController {
   @ApiOperation({ summary: 'send verification code' })
   @ApiBadRequestResponse({ type: DuplicateError })
   async register(
+    @Body() userInfo: InRegisterDto,
+  ): Promise<OutShortVerifierDto> {
+    const data = await this.authService.register(userInfo);
+    if (data instanceof DuplicateError) return data.throw();
+    return data;
+  }
+
+  @Put('user')
+  @ApiOperation({ summary: 'edit user' })
+  @ApiBadRequestResponse({ type: DuplicateError })
+  async editUser(
     @Body() userInfo: InRegisterDto,
   ): Promise<OutShortVerifierDto> {
     const data = await this.authService.register(userInfo);
