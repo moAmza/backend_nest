@@ -60,6 +60,7 @@ export class PlayerService {
     page,
     num,
     search,
+    role,
   }: InGetPaginatedPlayers): Promise<
     OutGetPaginatedPlayersDto | NotFoundError
   > {
@@ -69,6 +70,7 @@ export class PlayerService {
       num,
       (page - 1) * num,
       search,
+      role,
       week.id,
     );
 

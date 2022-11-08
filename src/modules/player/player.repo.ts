@@ -24,10 +24,12 @@ export class PlayerRepo {
     limit: number,
     skip: number,
     search: string,
+    role: string,
     weekId: string,
   ): Promise<PaginatedType<PopulatedWithStats<MongoDoc<Player>>>> {
     return (
       await this.model.aggregate([
+        { $match: role === 'all' ? {} : { role: role } },
         {
           $match: {
             $or: [

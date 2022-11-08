@@ -1,10 +1,7 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { PlayerService } from './player.service';
-import { RolesGuard } from '../../guards/roles.guard';
-import { Role } from '../../decorators/roles.decorator';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOperation,
 } from '@nestjs/swagger';
