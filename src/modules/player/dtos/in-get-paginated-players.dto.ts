@@ -22,8 +22,8 @@ export class InGetPaginatedPlayers implements InPaginatedDto, InSearchableDto {
   @IsOptional()
   search: string = '';
 
-  @ApiProperty({ required: false, default: 'all' })
+  @ApiProperty({ required: false, default: 'All' })
   @IsString()
   @IsOptional()
-  role: string = 'all';
+  role: string = 'All';
 }
