@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { TypeEventDto } from './dtos/type-event.dto';
-import { SwapLog } from './swap-log.schema';
+import { SwapLog } from './event-log.schema';
 
 @Injectable()
 export class SwapLogRepo {

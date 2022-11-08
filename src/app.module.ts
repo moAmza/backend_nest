@@ -14,17 +14,15 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EventModule } from './modules/event/event.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailModule } from './modules/mail/mail.module';
-
-const mailerOptions = {
-  transport: 'smtps://rahnema.high5@gmail.com:jmagkkcenbcziqea@smtp.gmail.com',
-};
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ServeStaticModule.forRoot({ rootPath: join(__dirname, 'public') }),
-    MongooseModule.forRoot('mongodb://localhost/nest'),
+    MongooseModule.forRoot(process.env.MONGODB_CREDENTIALS ?? ''),
     ScheduleModule.forRoot(),
-    MailerModule.forRoot(mailerOptions),
+    MailerModule.forRoot({ transport: process.env.MAIL_SERVICE_CREDENTIALS }),
     PlayerModule,
     UserModule,
     AuthModule,

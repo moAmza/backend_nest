@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventController } from './event.controller';
 import { SwapLogRepo } from './swap-log.repo';
-import { SwapLog, SwapLogSchema } from './swap-log.schema';
+import { SwapLog, SwapLogSchema } from './event-log.schema';
 import { EventService } from './event.service';
 import { SocialModule } from '../social/social.module';
 import { WeekModule } from '../week/week.module';

@@ -13,6 +13,6 @@ async function bootstrap() {
 
   UserSchema.index({ username: 'text', firstname: 'text', lastname: 'text' });
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
