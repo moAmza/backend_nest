@@ -29,7 +29,7 @@ export class PlayerRepo {
   ): Promise<PaginatedType<PopulatedWithStats<MongoDoc<Player>>>> {
     return (
       await this.model.aggregate([
-        { $match: role === 'all' ? {} : { role: role } },
+        { $match: role === 'All' ? {} : { role: role } },
         {
           $match: {
             $or: [
