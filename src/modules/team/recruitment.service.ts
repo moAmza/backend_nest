@@ -24,6 +24,7 @@ export class RecruitmentService {
 
   async createOne(
     team: TypeTeamDto,
+    isPlaying: boolean,
     playerId: string,
     positionNum: number,
   ): Promise<TypeRecruitmentDto | NotFoundError | BadRequestError> {
@@ -33,7 +34,7 @@ export class RecruitmentService {
       teamId: new mongoose.Types.ObjectId(team.id),
       playerId: new mongoose.Types.ObjectId(player.id),
       positionNum,
-      isPlaying: false,
+      isPlaying,
       createdAt: new Date(),
     });
 

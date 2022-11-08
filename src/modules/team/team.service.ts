@@ -113,7 +113,13 @@ export class TeamService {
       return new BadRequestError('LowCredit');
     await this.removePlayerFromTeam(userId, positionNum);
     await this.teamRepo.incrementCredit(team.id, -1 * player.playerStats.price);
-    await this.recruitService.createOne(team, playerId, positionNum);
+    const nimkat = [1, 6, 11, 14];
+    await this.recruitService.createOne(
+      team,
+      !nimkat.includes(positionNum),
+      playerId,
+      positionNum,
+    );
     const newTeam = await this.getTeamByUserId(userId);
     return newTeam;
   }
